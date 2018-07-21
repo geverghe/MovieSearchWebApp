@@ -6,3 +6,12 @@ branches:
   only:
   - gh-pages
   - /.*/
+notifications:
+  webhooks:
+    urls:
+      - https://webhook.atomist.com/atomist/travis/teams/ABLBDC4BI
+    on_success: always
+    on_failure: always
+    on_start: always
+    on_cancel: always
+    on_error: always
