@@ -1,17 +1,27 @@
-# Docker image
-# Build a Docker image to deploy, run, or push to a container registry.
-# Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+jobs:
+- job:
+  displayName: 'macOS'
+  pool:
+    vmImage: 'macOS-10.13'  
+  steps:
+  - script: az --version
+    displayName: 'Show Azure CLI version'
 
-trigger:
-- master
+  - script: az extension add -n azure-devops
+    displayName: 'Install Azure DevOps Extension'
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+  - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login
+    env:
+      AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
+    displayName: 'Login Azure DevOps Extension'
 
-variables:
-  imageName: 'your-container-image-name:$(build.buildId)'
+  - script: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases yes
+    displayName: 'Set default Azure DevOps organization and project'
 
-steps:
-- script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+  - script: |
+      az pipelines build list
+      git pr list
+    displayName: 'Show build list and PRs'
+
+
+  
