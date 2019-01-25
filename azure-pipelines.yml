@@ -27,6 +27,11 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7.0'
+      architecture: 'x64'
+
   - script: python -m pip install --upgrade pip
     displayName: 'Install pip'
 
@@ -63,6 +68,11 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7.0'
+      architecture: 'x64'
+
   - script: python -m pip install --upgrade pip
     displayName: 'Upgrade pip'
 
