@@ -36,21 +36,18 @@ jobs:
       architecture: 'x64'
 
   - script: python -m pip install --upgrade pip
-    displayName: 'Install pip'
-
-  - script: pip install --upgrade pip
     displayName: 'Upgrade pip'
-    
+
   - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
     displayName: 'upgrade azure cli'
-    
+
   - script: az --version
     displayName: 'Show Azure CLI version'
 
   - script: az extension add -n azure-devops
     displayName: 'Install Azure DevOps Extension'
-
-  - script: echo ${System.AccessToken} | az devops login
+    
+  - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login
     env:
       AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
     displayName: 'Login Azure DevOps Extension'
