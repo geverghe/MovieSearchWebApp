@@ -1,9 +1,10 @@
 jobs:
+# Running Azure DevOps extension commands on a hosted Ubuntu Agent Pool
 - job:
-  displayName: 'Windows'
+  displayName: 'Linux'
   pool:
-    vmImage: 'vs2017-win2016'
-  steps:
+    vmImage: 'ubuntu-16.04'
+  steps:  
   # Updating the python version available on the linux agent
   - task: UsePythonVersion@0
     inputs:
