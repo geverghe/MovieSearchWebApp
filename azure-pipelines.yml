@@ -27,6 +27,15 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
+  - script: python -m pip install --upgrade pip
+    displayName: 'Upgrade pip'
+    
+  - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
+    displayName: 'upgrade azure cli'
+
+  - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
+    displayName: 'upgrade azure cli'
+    
   - script: az --version
     displayName: 'Show Azure CLI version'
 
@@ -51,14 +60,17 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - script: python -m pip install --upgrade pip
+    displayName: 'Upgrade pip'
+
+  - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
+    displayName: 'upgrade azure cli'
+
   - script: az --version
     displayName: 'Show Azure CLI version'
 
   - script: az extension add -n azure-devops
     displayName: 'Install Azure DevOps Extension'
-
-  - script: python -m pip install --upgrade pip
-    displayName: 'Upgrade pip'
     
   - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login
     env:
