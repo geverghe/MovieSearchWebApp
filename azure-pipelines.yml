@@ -1,30 +1,4 @@
-trigger: none
-
 jobs:
-- job:
-  displayName: 'macOS'
-  pool:
-    vmImage: 'macOS-10.13'  
-  steps:
-  - script: az --version
-    displayName: 'Show Azure CLI version'
-
-  - script: az extension add -n azure-devops
-    displayName: 'Install Azure DevOps Extension'
-
-  - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login --debug
-    env:
-      AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
-    displayName: 'Login Azure DevOps Extension'
-  
-  - script: az devops configure --defaults organization=https://georgeverghese.visualstudio.com project="Movie Search Web App" --use-git-aliases yes
-    displayName: 'Set default Azure DevOps organization and project'
-
-  - script: |
-      az pipelines build list
-      git pr list
-    displayName: 'Show build list and PRs'
-
 - job:
   displayName: 'Windows'
   pool:
@@ -47,7 +21,7 @@ jobs:
   - script: az extension add -n azure-devops
     displayName: 'Install Azure DevOps Extension'
     
-  - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login
+  - script: echo $(System.AccessToken) | az devops login
     env:
       AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
     displayName: 'Login Azure DevOps Extension'
@@ -59,40 +33,3 @@ jobs:
       az pipelines build list
       git pr list
     displayName: 'Show build list and PRs'
-
-- job:
-  displayName: 'Linux'
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.7.0'
-      architecture: 'x64'
-
-  - script: python -m pip install --upgrade pip
-    displayName: 'Upgrade pip'
-
-  - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-    displayName: 'upgrade azure cli'
-
-  - script: az --version
-    displayName: 'Show Azure CLI version'
-
-  - script: az extension add -n azure-devops
-    displayName: 'Install Azure DevOps Extension'
-    
-  - script: echo ${AZURE_DEVOPS_CLI_PAT} | az devops login
-    env:
-      AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
-    displayName: 'Login Azure DevOps Extension'
-  
-  - script: az devops configure --defaults organization=https://georgeverghese.visualstudio.com project="Movie Search Web App" --use-git-aliases yes
-    displayName: 'Set default Azure DevOps organization and project'
-
-  - script: |
-      az pipelines build list
-      git pr list
-    displayName: 'Show build list and PRs'
-
-  
